@@ -1,57 +1,49 @@
 
 <!DOCTYPE html>
 <?php 
-session_start();
-include_once('../protect.php');
-$event_id = $_GET['id'];
+	session_start();
+	include_once('../protect.php');
+	$event_id = $_GET['id'];
 
-$guest_user = true; 
-$event_booked ="";
-if (isset($_SESSION['message']['user'])) 
-{
-	$event_booked = false;
-	$guest_user = false; 
-	$user_id = $_SESSION['message']['user']['ID'];
-	$user_events = booking_history($user_id);
-	
-	foreach ($user_events as $key)
+	$guest_user = true;
+	$event_booked ="";
+	if (isset($_SESSION['message']['user']))
 	{
-		if ($key['event_id'] == $event_id)
+		$event_booked = false;
+		$guest_user = false;
+		$user_id = $_SESSION['message']['user']['ID'];
+		$user_events = booking_history($user_id);
+
+		foreach ($user_events as $key)
 		{
-			$event_booked = true;
+			if ($key['event_id'] == $event_id)
+			{
+				$event_booked = true;
+			}
 		}
-	} 
 
-}
+	}
 
+	$this_event = one_event($event_id);
+	if ($this_event['price'] == 0)
+	{
+	    $price = "FREE";
+	}
+	else
+	{
+	    $price = "$".$this_event['price'];
+	}
 
+	$capacity = capacity($this_event['event_name']);
+	if ($capacity == 0)
+	{
+		$status = "FULL";
+	}
+	else
+	{
+		$status = $capacity;
 
-
-$this_event = one_event($event_id);
-if ($this_event['price'] == 0) 
-{
-    $price = "FREE";
-}
-else
-{
-    $price = "$".$this_event['price'];
-}	
-
-$capacity = capacity($this_event['event_name']);
-if ($capacity == 0) 
-{
-	$status = "FULL";
-}
-else
-{
-	$status = $capacity;
-
-}
-
-
-
-
-
+	}
 
 ?>
  <html class="no-js"> <!--<![endif]-->
@@ -97,24 +89,21 @@ else
 
 	<!-- Modernizr JS -->
 	<script src="js/modernizr-2.6.2.min.js"></script>
-	<!-- FOR IE9 below -->
-	<!--[if lt IE 9]>
-	<script src="js/respond.min.js"></script>
 	<![endif]-->
 
 	</head>
 	<body>
-	<header id="fh5co-header">
+	<header id="fh5co-header" style="padding-top: 0;">
 		
 		<div class="container-fluid">
-			<nav class="gtco-nav" role="navigation">
+			<nav class="gtco-nav" role="navigation" style="padding-bottom: 10px; padding-top: 10px;">
 				<div class="gtco-container" >
 					
 					<div class="row">
-						<div class="col-sm-2 col-xs-12">
-							<div id="gtco-logo"><a href="index.html">University of wollongong</div>
+						<div class=" col-m-4 col-sm-4 col-xs-4" >
+							<img src="./../images/logo.svg" style="width:100px;">
 						</div>
-						<div class="col-xs-10 text-right menu-1">
+						<div class="col-m-8 col-xs-8 text-right menu-1">
 							<ul>
 								<li class="active"><a href="../index.php">Home</a></li>
 								<li class="active" <?php if (!isset($_SESSION['message']['user'])) { echo "style=\"display:none;\"";} ?> ><a <?php if (isset($user_admin) && $user_admin == true ) {
@@ -168,11 +157,7 @@ else
 						<div class="col-lg-8 fh5co-highlight animate-box">
 							<p><?php echo $this_event['txt']; ?></p>
 						</div>
-	
 					</div>
-
-					
-					
 				</div>
 			</article>
 		</div>
@@ -180,43 +165,30 @@ else
 		<footer id="gtco-footer" class="gtco-section" role="contentinfo">
 			<div class="gtco-container" id="jump_here">
 				<div class="row row-pb-md">
-					<div class="col-md-4 gtco-widget gtco-footer-paragraph">
-						<h3>University of Wollongong Event Booking Website</h3>
-						<p>This is a place where you can find all the upcoming events and book for events that you are interested in...</p>
+					<div class="col-md-6 gtco-widget gtco-footer-paragraph">
+						<h3>UOW Event Booking Website</h3>
+						<p style="width: 260px;">This is a place where you can find all the upcoming events and book the ones that you are interested in...</p>
 					</div>
-					<div class="col-md-4">
-						<div class="row">
-							<div class="col-md-6 gtco-footer-link">
+					<div class="col-md-6">
+							<div class="gtco-footer-link" style="position: relative; float: right; margin-right: 40px;">
 								<h3>Links</h3>
 								<ul class="gtco-list-link">
-									<li><a href="../index.php">Home</a></li>
-									<li><a href="https://www.uow.edu.au/index.html">University of Wollongong</a></li>
-									<li><a href="https://www.library.uow.edu.au/index.html">UOW Library</a></li>
-									<li><a href="#">Contact</a></li>
+									<li><a href="./../index.php" style="text-transform: capitalize;">Home</a></li>
+									<li><a href="https://www.uow.edu.au/index.html" style="text-transform: capitalize;">UOW Website</a></li>
+									<li><a href="https://www.library.uow.edu.au/index.html" style="text-transform: capitalize;">UOW Library</a></li>
+									<li><a href="#" style="text-transform: capitalize;">Contact</a></li>
 								</ul>
-
 							</div>
-						</div>
-
 					</div>
-					<div class="col-md-4">
-							<ul >
-								<li class="address">Wollongong wollongong</li>
-								<li class="phone"><a href="tel://1234567890">1235 2355 980</a></li>
-								<li class="email"><a href="#">info@yoursite.com</a></li>
-								<li class="url"><a href="#">www.yoursite.com</a></li>
-							</ul>
-
-					</div>				
 			</div>
 			<div class="gtco-copyright">
 				<div class="gtco-container">
 					<div class="row">
 						<div class="col-md-6 text-left">
-							<p><small>&copy; 2018 All Rights Reserved. </small></p>
+							<p><small>&copy; 2019 All Rights Reserved. </small></p>
 						</div>
 						<div class="col-md-6 text-right">
-							<p><small>Designed by <a href="#" target="_blank">Silk Road Group</a> </small> </p>
+							<p><small>Designed by <a href="#" target="_blank">Saeed ET</a></small> </p>
 						</div>
 					</div>
 				</div>

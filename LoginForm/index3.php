@@ -48,7 +48,7 @@
                 <div class="clr"></div>
             </div><!--/ Codrops top bar -->
             <header>
-                <h1>University of Wollongong<span> Events Booking</span></h1>
+                <h1>University of Wollongong<span> Event Booking</span></h1>
 				<!-- <nav class="codrops-demos">
 					<span>Click <strong>"Join us"</strong> to see the form switch</span>
 					<a href="index.html">Demo 1</a>
