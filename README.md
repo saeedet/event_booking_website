@@ -5,7 +5,7 @@ The website has two levels of access for admins and users.
 
 Admins are able to create, edit or delete events.
 
-Users are able to signe up and book or pay for different events.
+Users are able to sign up and book or pay for different events.
 
 #running
 
